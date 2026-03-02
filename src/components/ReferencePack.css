@@ -1,0 +1,236 @@
+.reference-pack {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.ref-controls {
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.title-group h3 {
+    font-size: 1.1rem;
+    margin-bottom: 2px;
+}
+
+.hint {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+.ref-list {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.ref-card {
+    display: grid;
+    grid-template-columns: 280px 1fr 300px;
+    gap: 24px;
+    padding: 32px 24px 24px 24px;
+    position: relative;
+    overflow: visible;
+}
+
+.remove-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: rgba(255, 0, 0, 0.2);
+    border: 1px solid rgba(255, 0, 0, 0.3);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: all 0.2s;
+}
+
+.remove-btn:hover {
+    background: rgba(255, 0, 0, 0.5);
+    transform: scale(1.1);
+}
+
+.ref-preview-section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.ref-preview {
+    width: 100%;
+    aspect-ratio: 16/9;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid var(--border-color);
+}
+
+.ref-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.placeholder-uploader {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    cursor: pointer;
+}
+
+.placeholder-uploader input[type="file"] {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.btn-tiny {
+    padding: 4px 8px;
+    font-size: 0.7rem;
+    align-self: flex-start;
+}
+
+.ref-info {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.ref-name-input {
+    font-size: 1.3rem !important;
+    font-weight: 700;
+    color: var(--accent-primary);
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    border-bottom: 2px solid transparent !important;
+    transition: border-color 0.2s;
+}
+
+.ref-name-input:focus {
+    border-bottom-color: var(--accent-primary) !important;
+}
+
+.ref-selectors {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.selector-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.selector-group label {
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.selector-group select {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    color: white;
+    padding: 4px 12px;
+    font-size: 0.85rem;
+    outline: none;
+}
+
+.selector-group select:focus {
+    border-color: var(--accent-primary);
+}
+
+.ref-notes label {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+}
+
+.ref-notes textarea {
+    width: 100%;
+    min-height: 80px;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.frame-analysis h5 {
+    margin-bottom: 12px;
+    font-size: 0.85rem;
+    color: var(--accent-secondary);
+    text-transform: uppercase;
+}
+
+.frames-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.frame-box {
+    aspect-ratio: 4/3;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px dashed var(--border-color);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.frame-box:hover {
+    border-color: var(--accent-secondary);
+}
+
+.frame-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.frame-label {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    font-size: 0.7rem;
+    font-weight: 800;
+    color: white;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 2px 6px;
+    border-radius: 4px;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.frame-box input[type="file"] {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}

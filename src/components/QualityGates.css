@@ -1,0 +1,104 @@
+.quality-gates {
+    padding: 10px;
+}
+
+.gates-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+
+.pillar-gate {
+    padding: 24px;
+}
+
+.pillar-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.pillar-icon {
+    font-size: 1.4rem;
+}
+
+.pillar-header h4 {
+    flex: 1;
+    font-size: 1.1rem;
+}
+
+.pillar-progress {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+}
+
+.progress-bar-bg {
+    height: 6px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 3px;
+    margin-bottom: 24px;
+    overflow: hidden;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.gate-items {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.gate-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+}
+
+.gate-item p {
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    flex: 1;
+    margin-right: 20px;
+}
+
+.gate-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.gate-btn {
+    padding: 6px 14px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    cursor: pointer;
+    border: 1px solid var(--border-color);
+    background: transparent;
+    color: var(--text-secondary);
+    transition: all 0.2s ease;
+}
+
+.gate-btn.pass:hover,
+.gate-btn.pass.active {
+    background: var(--color-pass);
+    color: #000;
+    border-color: var(--color-pass);
+    box-shadow: 0 0 10px rgba(0, 230, 118, 0.3);
+}
+
+.gate-btn.fail:hover,
+.gate-btn.fail.active {
+    background: var(--color-fail);
+    color: #fff;
+    border-color: var(--color-fail);
+    box-shadow: 0 0 10px rgba(255, 23, 68, 0.3);
+}

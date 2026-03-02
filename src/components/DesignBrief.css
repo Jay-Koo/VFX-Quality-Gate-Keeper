@@ -1,0 +1,108 @@
+.design-brief {
+    padding: 10px;
+}
+
+.brief-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.brief-section {
+    padding: 24px;
+}
+
+.full-width {
+    grid-column: span 2;
+}
+
+.brief-section h3 {
+    margin-bottom: 20px;
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    border-left: 3px solid var(--accent-primary);
+    padding-left: 12px;
+}
+
+.form-group {
+    margin-bottom: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+label {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+.radio-group,
+.checkbox-group {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+
+.radio-group label,
+.checkbox-group label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+}
+
+.targets-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+}
+
+.target-card {
+    padding: 20px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-color);
+}
+
+.target-card h4 {
+    margin-bottom: 15px;
+    font-size: 1rem;
+}
+
+.target-card.clarity {
+    border-top: 4px solid var(--accent-primary);
+}
+
+.target-card.art {
+    border-top: 4px solid var(--accent-secondary);
+}
+
+.target-card.tech {
+    border-top: 4px solid var(--accent-tertiary);
+}
+
+.color-inputs {
+    display: flex;
+    gap: 10px;
+}
+
+input[type="color"] {
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+textarea {
+    width: 100%;
+    height: 80px;
+    resize: none;
+}

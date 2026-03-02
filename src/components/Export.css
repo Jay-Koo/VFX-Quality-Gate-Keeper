@@ -1,0 +1,98 @@
+.export-view {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.export-header {
+    padding: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.status-info h3 {
+    font-size: 1.2rem;
+    margin-bottom: 4px;
+}
+
+.status-info p {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+}
+
+.path-info {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    background: rgba(0, 0, 0, 0.2);
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px dashed rgba(255, 255, 255, 0.1);
+}
+
+.path-info span {
+    color: var(--accent-primary);
+    font-weight: bold;
+}
+
+.structure-preview {
+    padding: 32px;
+}
+
+.structure-preview h5 {
+    margin-bottom: 24px;
+    font-size: 1rem;
+    color: var(--accent-primary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.tree-view {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.95rem;
+}
+
+.tree-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.folder-icon {
+    color: #f0c674;
+}
+
+.file-icon {
+    color: var(--text-secondary);
+    margin-left: 24px;
+}
+
+.tree-content {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.quick-md-export {
+    display: flex;
+    gap: 16px;
+}
+
+.quick-md-export .btn {
+    flex: 1;
+    text-align: center;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+}
+
+.quick-md-export .btn:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--accent-primary);
+    color: var(--accent-primary);
+}

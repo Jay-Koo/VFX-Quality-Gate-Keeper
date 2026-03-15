@@ -25,11 +25,11 @@ const QualityGates = ({ data, update }) => {
                             <div className="gate-actions">
                                 <button
                                     className={`gate-btn pass ${item.pass === true ? 'active' : ''}`}
-                                    onClick={() => update(pillar, item.id, true)}
+                                    onClick={() => update(pillar, item.id, item.pass === true ? null : true)}
                                 >PASS</button>
                                 <button
                                     className={`gate-btn fail ${item.pass === false ? 'active' : ''}`}
-                                    onClick={() => update(pillar, item.id, false)}
+                                    onClick={() => update(pillar, item.id, item.pass === false ? null : false)}
                                 >FAIL</button>
                             </div>
                         </div>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './ReferencePack.css';
-import { saveImageToDB, getImageFromDB, deleteImageFromDB } from '../App';
+import { saveImageToDB, getImageFromDB, deleteImageFromDB } from '../utils/indexedDB';
 import { parseGIF, decompressFrames } from 'gifuct-js';
 
 const ReferencePack = ({ data, update }) => {
@@ -47,7 +47,9 @@ const ReferencePack = ({ data, update }) => {
     const removeRef = async (id) => {
         if (confirm('Remove this reference?')) {
             await deleteImageFromDB(`main_${id}`);
-            ['0%', '20%', '60%', '100%'].forEach(async f => await deleteImageFromDB(`frame_${id}_${f}`));
+            await Promise.all(
+                ['0%', '20%', '60%', '100%'].map(f => deleteImageFromDB(`frame_${id}_${f}`))
+            );
             update(data.filter(ref => ref.id !== id));
         }
     };
@@ -109,7 +111,6 @@ const ReferencePack = ({ data, update }) => {
     const [gifFrames, setGifFrames] = useState(null); // Parsed GIF frames
     const [gifFrameExtractor, setGifFrameExtractor] = useState({ refId: null, totalFrames: 0 });
     const [frameCapture, setFrameCapture] = useState({ active: false, refId: null, targetFrame: null, currentFrameIndex: 0 });
-    const previewCanvasRef = useRef(null);
 
     const handleGifUpload = async (id, e) => {
         const file = e.target.files[0];
@@ -248,10 +249,6 @@ const ReferencePack = ({ data, update }) => {
         }
     };
 
-    const closeGifExtractor = () => {
-        setGifFrameExtractor({ refId: null, gifDataUrl: null, totalFrames: 0 });
-    };
-
     const activateFrameExtractorFromExisting = async (refId) => {
         try {
             console.log('🔄 Activating frame extractor for existing GIF...');
@@ -380,7 +377,7 @@ const ReferencePack = ({ data, update }) => {
                         <div className="frame-analysis">
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
                                 <h5>Frame Analysis (v3.0)</h5>
-                                {gifFrameExtractor.refId === ref.id && gifFrameExtractor.gifDataUrl && (
+                                {gifFrameExtractor.refId === ref.id && gifFrames && gifFrames.length > 0 && (
                                     <span style={{ fontSize: '0.85rem', color: '#00f2ff' }}>🎬 GIF loaded - Click frames to extract</span>
                                 )}
                             </div>
@@ -396,7 +393,7 @@ const ReferencePack = ({ data, update }) => {
                                         ) : (
                                             <>
                                                 <span className="frame-label">{frame}</span>
-                                                {gifFrameExtractor.refId === ref.id && gifFrameExtractor.gifDataUrl ? (
+                                                {gifFrameExtractor.refId === ref.id && gifFrames && gifFrames.length > 0 ? (
                                                     <button
                                                         className="btn btn-tiny"
                                                         onClick={() => openFrameCapture(ref.id, frame)}

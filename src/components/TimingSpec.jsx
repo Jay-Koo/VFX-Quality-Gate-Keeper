@@ -1,17 +1,19 @@
-﻿import React, { useState } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import './TimingSpec.css';
 
 const TimingSpec = ({ data, update }) => {
     // Initialize phaseRatios if not present (for existing data)
-    if (!data.phaseRatios) {
-        update({
-            phaseRatios: {
-                anticipation: 15,
-                action: 25,
-                resolution: 60
-            }
-        });
-    }
+    useEffect(() => {
+        if (!data.phaseRatios) {
+            update({
+                phaseRatios: {
+                    anticipation: 15,
+                    action: 25,
+                    resolution: 60
+                }
+            });
+        }
+    }, [data.phaseRatios, update]);
 
     // Use dynamic phase ratios from state with fallback
     const phaseRatios = data.phaseRatios || { anticipation: 15, action: 25, resolution: 60 };
@@ -82,10 +84,6 @@ const TimingSpec = ({ data, update }) => {
         const mouseX = e.clientX - rect.left;
         const percentage = Math.max(0, Math.min(100, (mouseX / rect.width) * 100));
 
-        // Calculate cumulative percentages
-        let cumulative = 0;
-        const phaseKeys = ['anticipation', 'action', 'resolution'];
-
         if (dragging.phaseIndex === 0) {
             // Dragging between Anticipation and Action
             updatePhaseRatio('anticipation', Math.round(percentage));
@@ -136,10 +134,10 @@ const TimingSpec = ({ data, update }) => {
                 <div className="curve-selector">
                     <label>Tension Curve (Non-linear)</label>
                     <select value={data.curve} onChange={(e) => update({ curve: e.target.value })}>
-                        <option>Slow-Fast (Acceleration)</option>
-                        <option>Fast-Slow (Snap)</option>
-                        <option>Pulse (2-Peak)</option>
-                        <option>Linear (NOT RECOMMENDED)</option>
+                        <option value="Slow-Fast">Slow-Fast (Acceleration)</option>
+                        <option value="Fast-Slow">Fast-Slow (Snap)</option>
+                        <option value="Pulse">Pulse (2-Peak)</option>
+                        <option value="Linear">Linear (NOT RECOMMENDED)</option>
                     </select>
                     {data.curve === 'Linear' && <span className="warning">⚠ Linear curve reduces impact!</span>}
                 </div>
@@ -163,7 +161,6 @@ const TimingSpec = ({ data, update }) => {
                     onMouseLeave={handleMouseUp}
                 >
                     {phases.map((phase, index) => {
-                        const cumulative = phases.slice(0, index).reduce((sum, p) => sum + p.pct, 0);
                         return (
                             <div
                                 key={phase.key}

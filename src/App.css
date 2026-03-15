@@ -101,3 +101,26 @@
   font-style: italic;
   font-size: 1.1rem;
 }
+
+.project-name {
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  padding: 4px 8px;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.project-name:hover {
+  border-color: var(--text-secondary);
+}
+
+.project-name:focus {
+  border-color: var(--accent-primary);
+}
+
+.project-name::placeholder {
+  color: var(--text-secondary);
+}

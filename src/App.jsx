@@ -5,9 +5,12 @@ import ReferencePack from './components/ReferencePack';
 import TimingSpec from './components/TimingSpec';
 import QualityGates from './components/QualityGates';
 import Export from './components/Export';
+import ErrorBoundary from './components/ErrorBoundary';
+import { getImageFromDB } from './utils/indexedDB';
 
 // Initial state for all modules
 const INITIAL_STATE = {
+  projectName: '',
   brief: {
     purpose: 'Clarity (Readability)',
     context: '',
@@ -65,64 +68,17 @@ const INITIAL_STATE = {
   }
 };
 
-// IndexedDB Helper
-const DB_NAME = 'VFXGateDB';
-const STORE_NAME = 'images';
-
-const initDB = () => {
-  return new Promise((resolve, reject) => {
-    const request = indexedDB.open(DB_NAME, 1);
-    request.onupgradeneeded = (e) => {
-      const db = e.target.result;
-      if (!db.objectStoreNames.contains(STORE_NAME)) {
-        db.createObjectStore(STORE_NAME);
-      }
-    };
-    request.onsuccess = () => resolve(request.result);
-    request.onerror = () => reject(request.error);
-  });
-};
-
-export const saveImageToDB = async (id, dataUrl) => {
-  const db = await initDB();
-  return new Promise((resolve, reject) => {
-    const transaction = db.transaction(STORE_NAME, 'readwrite');
-    const store = transaction.objectStore(STORE_NAME);
-    const request = store.put(dataUrl, id);
-    request.onsuccess = () => resolve();
-    request.onerror = () => reject(request.error);
-  });
-};
-
-export const getImageFromDB = async (id) => {
-  const db = await initDB();
-  return new Promise((resolve, reject) => {
-    const transaction = db.transaction(STORE_NAME, 'readonly');
-    const store = transaction.objectStore(STORE_NAME);
-    const request = store.get(id);
-    request.onsuccess = () => resolve(request.result);
-    request.onerror = () => reject(request.error);
-  });
-};
-
-export const deleteImageFromDB = async (id) => {
-  const db = await initDB();
-  return new Promise((resolve, reject) => {
-    const transaction = db.transaction(STORE_NAME, 'readwrite');
-    const store = transaction.objectStore(STORE_NAME);
-    const request = store.delete(id);
-    request.onsuccess = () => resolve();
-    request.onerror = () => reject(request.error);
-  });
-};
-
 function App() {
   const [activeTab, setActiveTab] = useState('brief');
 
   // Load state from localStorage or use initial
   const [vfxData, setVfxData] = useState(() => {
-    const saved = localStorage.getItem('vfx_gate_data');
-    return saved ? JSON.parse(saved) : INITIAL_STATE;
+    try {
+      const saved = localStorage.getItem('vfx_gate_data');
+      return saved ? JSON.parse(saved) : INITIAL_STATE;
+    } catch {
+      return INITIAL_STATE;
+    }
   });
 
   // Persist state to localStorage whenever it changes
@@ -185,7 +141,12 @@ function App() {
         <header className="top-bar glass-panel">
           <h2>{tabs.find(t => t.id === activeTab)?.label}</h2>
           <div className="user-info">
-            <span className="project-name">Project: Neon Nexus</span>
+            <input
+              className="project-name"
+              value={vfxData.projectName}
+              onChange={(e) => setVfxData(prev => ({ ...prev, projectName: e.target.value }))}
+              placeholder="Project Name"
+            />
             <button
               className="btn btn-secondary"
               style={{ padding: '4px 12px', marginLeft: '12px', fontSize: '0.8rem' }}
@@ -196,11 +157,11 @@ function App() {
 
         <section className="view-container">
           <div className="glass-panel content-card">
-            {activeTab === 'brief' && <DesignBrief data={vfxData.brief} update={updateBrief} />}
-            {activeTab === 'ref' && <ReferencePack data={vfxData.refs} update={updateRefs} />}
-            {activeTab === 'timing' && <TimingSpec data={vfxData.timing} update={updateTiming} />}
-            {activeTab === 'gates' && <QualityGates data={vfxData.gates} update={updateGates} />}
-            {activeTab === 'export' && <Export data={vfxData} getImageFromDB={getImageFromDB} />}
+            {activeTab === 'brief' && <ErrorBoundary name="DesignBrief" key="brief"><DesignBrief data={vfxData.brief} update={updateBrief} /></ErrorBoundary>}
+            {activeTab === 'ref' && <ErrorBoundary name="ReferencePack" key="ref"><ReferencePack data={vfxData.refs} update={updateRefs} /></ErrorBoundary>}
+            {activeTab === 'timing' && <ErrorBoundary name="TimingSpec" key="timing"><TimingSpec data={vfxData.timing} update={updateTiming} /></ErrorBoundary>}
+            {activeTab === 'gates' && <ErrorBoundary name="QualityGates" key="gates"><QualityGates data={vfxData.gates} update={updateGates} /></ErrorBoundary>}
+            {activeTab === 'export' && <ErrorBoundary name="Export" key="export"><Export data={vfxData} getImageFromDB={getImageFromDB} /></ErrorBoundary>}
           </div>
         </section>
       </main>

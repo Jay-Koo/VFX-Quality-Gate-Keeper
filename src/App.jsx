@@ -6,8 +6,11 @@ import TimingSpec from './components/TimingSpec';
 import QualityGates from './components/QualityGates';
 import Export from './components/Export';
 import Backup from './components/Backup';
+import Library from './components/Library';
+import AnalysisCard from './components/AnalysisCard';
 import ErrorBoundary from './components/ErrorBoundary';
-import { getImageFromDB } from './utils/indexedDB';
+import { getImageFromDB, deleteImageFromDB } from './utils/indexedDB';
+import { loadEyeData, saveEyeData, createCard, mediaKey, thumbKey } from './utils/eyeStore';
 
 // Initial state for all modules
 const INITIAL_STATE = {
@@ -70,7 +73,51 @@ const INITIAL_STATE = {
 };
 
 function App() {
-  const [activeTab, setActiveTab] = useState('brief');
+  const [activeTab, setActiveTab] = useState('library');
+
+  // Eye-training data (analysis cards + criteria) — separate store/lifecycle
+  // from the legacy planning data below.
+  const [eyeData, setEyeData] = useState(loadEyeData);
+  const [openCardId, setOpenCardId] = useState(null);
+
+  useEffect(() => {
+    saveEyeData(eyeData);
+  }, [eyeData]);
+
+  const newCard = () => {
+    const card = createCard();
+    setEyeData(prev => ({ ...prev, cards: [...prev.cards, card] }));
+    setOpenCardId(card.id);
+  };
+
+  const updateCard = (updated) => {
+    setEyeData(prev => ({
+      ...prev,
+      cards: prev.cards.map(c => c.id === updated.id ? updated : c)
+    }));
+  };
+
+  const deleteCard = async (id) => {
+    if (!confirm('Delete this analysis card? Its media is removed too.')) return;
+    try {
+      await deleteImageFromDB(mediaKey(id));
+      await deleteImageFromDB(thumbKey(id));
+    } catch (err) {
+      console.warn('Failed to delete card media:', err);
+    }
+    // Also drop the card from any criterion that cites it as evidence.
+    setEyeData(prev => ({
+      ...prev,
+      cards: prev.cards.filter(c => c.id !== id),
+      criteria: prev.criteria.map(cr => ({
+        ...cr,
+        evidenceCardIds: cr.evidenceCardIds.filter(cid => cid !== id)
+      }))
+    }));
+    if (openCardId === id) setOpenCardId(null);
+  };
+
+  const openCard = eyeData.cards.find(c => c.id === openCardId) || null;
 
   // Load state from localStorage or use initial
   const [vfxData, setVfxData] = useState(() => {
@@ -110,6 +157,7 @@ function App() {
   };
 
   const tabs = [
+    { id: 'library', label: 'Library', icon: '🗂️' },
     { id: 'brief', label: 'Design Brief', icon: '📝' },
     { id: 'ref', label: 'Reference Pack', icon: '🖼️' },
     { id: 'timing', label: 'Timing Spec', icon: '⏱️' },
@@ -159,6 +207,22 @@ function App() {
 
         <section className="view-container">
           <div className="glass-panel content-card">
+            {activeTab === 'library' && (
+              openCard ? (
+                <ErrorBoundary name="AnalysisCard" key={`card-${openCard.id}`}>
+                  <AnalysisCard card={openCard} onChange={updateCard} onBack={() => setOpenCardId(null)} />
+                </ErrorBoundary>
+              ) : (
+                <ErrorBoundary name="Library" key="library">
+                  <Library
+                    cards={eyeData.cards}
+                    onNewCard={newCard}
+                    onOpenCard={setOpenCardId}
+                    onDeleteCard={deleteCard}
+                  />
+                </ErrorBoundary>
+              )
+            )}
             {activeTab === 'brief' && <ErrorBoundary name="DesignBrief" key="brief"><DesignBrief data={vfxData.brief} update={updateBrief} /></ErrorBoundary>}
             {activeTab === 'ref' && <ErrorBoundary name="ReferencePack" key="ref"><ReferencePack data={vfxData.refs} update={updateRefs} /></ErrorBoundary>}
             {activeTab === 'timing' && <ErrorBoundary name="TimingSpec" key="timing"><TimingSpec data={vfxData.timing} update={updateTiming} /></ErrorBoundary>}

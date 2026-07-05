@@ -115,30 +115,29 @@ const Backup = () => {
 
   return (
     <div className="backup-view">
-      <div className="backup-card glass-panel">
-        <h3>📤 Export Full Backup</h3>
+      <section className="backup-card">
+        <h3>Export full backup</h3>
         <p>
-          Downloads a single JSON file with everything: analysis cards, criteria,
-          planning data, and all stored images/GIFs. Your library is an asset —
-          back it up regularly. This file is also how you share your library
-          (send it, the other side imports it).
+          카드·기준·기획 데이터·저장된 이미지 전체를 단일 JSON으로 내려받는다.
+          라이브러리는 자산이다 — 정기적으로 백업한다. 이 파일이 공유 수단이기도 하다.
         </p>
-        <p className="backup-stats">
-          Current library: <strong>{eyeData.cards.length}</strong> cards · <strong>{eyeData.criteria.length}</strong> criteria
-        </p>
-        <button className="btn btn-primary" onClick={handleExport} disabled={busy}>
-          {busy ? 'Working…' : '📦 Export Backup JSON'}
-        </button>
-      </div>
+        <div className="backup-actions">
+          <button className="btn btn-primary" onClick={handleExport} disabled={busy}>
+            {busy ? 'Working…' : 'Export backup JSON'}
+          </button>
+          <span className="backup-stats">
+            현재: {eyeData.cards.length} cards · {eyeData.criteria.length} criteria
+          </span>
+        </div>
+      </section>
 
-      <div className="backup-card glass-panel backup-danger">
-        <h3>📥 Import Backup</h3>
+      <section className="backup-card backup-danger">
+        <h3>Import backup</h3>
         <p>
-          Restores a backup file. <strong>Replaces all current data</strong> —
-          export first if the current state matters.
+          <strong>현재 데이터를 전부 교체한다</strong> — 지금 상태가 중요하다면 먼저 export한다.
         </p>
         <label className="btn btn-secondary import-label">
-          Select Backup File…
+          Select backup file…
           <input
             type="file"
             accept="application/json,.json"
@@ -147,7 +146,7 @@ const Backup = () => {
             style={{ display: 'none' }}
           />
         </label>
-      </div>
+      </section>
 
       {status && (
         <div className={`backup-status ${status.ok ? 'ok' : 'error'}`}>{status.message}</div>

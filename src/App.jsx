@@ -237,7 +237,7 @@ function App() {
               </ErrorBoundary>
             )}
             {activeTab === 'brief' && <ErrorBoundary name="DesignBrief" key="brief"><DesignBrief data={vfxData.brief} update={updateBrief} /></ErrorBoundary>}
-            {activeTab === 'export' && <ErrorBoundary name="Export" key="export"><Export data={vfxData} /></ErrorBoundary>}
+            {activeTab === 'export' && <ErrorBoundary name="Export" key="export"><Export data={vfxData} onGoBackup={() => setActiveTab('backup')} /></ErrorBoundary>}
             {activeTab === 'backup' && <ErrorBoundary name="Backup" key="backup"><Backup /></ErrorBoundary>}
           </div>
         </section>

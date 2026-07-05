@@ -2,64 +2,72 @@ import React from 'react';
 import './DesignBrief.css';
 
 const DesignBrief = ({ data, update }) => {
+    const sectionHead = (num, title) => (
+        <div className="db-sec-head">
+            <span className="db-sec-num">{num}</span>
+            <h2>{title}</h2>
+        </div>
+    );
+
     return (
         <div className="design-brief">
-            <div className="brief-grid">
-                {/* Basic Info Section */}
-                <div className="brief-section glass-panel">
-                    <h3>1. Basic Information</h3>
-                    <div className="form-group">
-                        <label>Effect Purpose</label>
-                        <select
-                            value={data.purpose}
-                            onChange={(e) => update({ purpose: e.target.value })}
-                        >
-                            <option>Clarity (Readability)</option>
-                            <option>Gratification (Feedback)</option>
-                            <option>Threat (Warning)</option>
-                            <option>World-building</option>
-                        </select>
-                    </div>
-                    <div className="form-group">
-                        <label>Effect Name / Skill</label>
-                        <input
-                            type="text"
-                            placeholder="e.g., Fireball, Shield Break, Dash Trail..."
-                            value={data.context}
-                            onChange={(e) => update({ context: e.target.value })}
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label>Camera Distance</label>
-                        <div className="radio-group">
-                            {['Close', 'Mid', 'Far'].map(dist => (
-                                <label key={dist}>
-                                    <input
-                                        type="radio"
-                                        name="camera"
-                                        checked={data.camera === dist}
-                                        onChange={() => update({ camera: dist })}
-                                    /> {dist}
-                                </label>
-                            ))}
+            <div className="db-grid">
+                {/* 01 Basic Information */}
+                <section className="db-section">
+                    {sectionHead('01', 'Basic information')}
+                    <div className="db-fields">
+                        <div className="db-field">
+                            <label>Effect purpose</label>
+                            <select
+                                value={data.purpose}
+                                onChange={(e) => update({ purpose: e.target.value })}
+                            >
+                                <option>Clarity (Readability)</option>
+                                <option>Gratification (Feedback)</option>
+                                <option>Threat (Warning)</option>
+                                <option>World-building</option>
+                            </select>
+                        </div>
+                        <div className="db-field">
+                            <label>Effect name / skill</label>
+                            <input
+                                type="text"
+                                placeholder="e.g. Fireball, Shield Break, Dash Trail…"
+                                value={data.context}
+                                onChange={(e) => update({ context: e.target.value })}
+                            />
+                        </div>
+                        <div className="db-field">
+                            <label>Camera distance</label>
+                            <div className="db-segmented">
+                                {['Close', 'Mid', 'Far'].map(dist => (
+                                    <button
+                                        key={dist}
+                                        className={data.camera === dist ? 'active' : ''}
+                                        onClick={() => update({ camera: dist })}
+                                    >
+                                        {dist}
+                                    </button>
+                                ))}
+                            </div>
                         </div>
                     </div>
-                </div>
+                </section>
 
-                {/* Performance & Constraints */}
-                <div className="brief-section glass-panel">
-                    <h3>2. Performance & Constraints</h3>
-                    <div className="form-row">
-                        <div className="form-group">
-                            <label>Draw Call (Max)</label>
+                {/* 02 Performance & Constraints */}
+                <section className="db-section">
+                    {sectionHead('02', 'Performance & constraints')}
+                    <div className="db-row">
+                        <div className="db-field">
+                            <label>Draw call (max)</label>
                             <input
                                 type="number"
                                 value={data.drawCall}
                                 onChange={(e) => update({ drawCall: parseInt(e.target.value) || 0 })}
                             />
                         </div>
-                        <div className="form-group">
-                            <label>Particle Count (Max)</label>
+                        <div className="db-field">
+                            <label>Particle count (max)</label>
                             <input
                                 type="number"
                                 value={data.particleCount}
@@ -67,8 +75,11 @@ const DesignBrief = ({ data, update }) => {
                             />
                         </div>
                     </div>
-                    <div className="form-group">
-                        <label>Screen Occupancy (%)</label>
+                    <div className="db-field db-occupancy">
+                        <div className="db-occupancy-head">
+                            <label>Screen occupancy</label>
+                            <span className="db-occupancy-value">max {data.occupancy}%</span>
+                        </div>
                         <input
                             type="range"
                             min="0"
@@ -76,116 +87,97 @@ const DesignBrief = ({ data, update }) => {
                             value={data.occupancy}
                             onChange={(e) => update({ occupancy: parseInt(e.target.value) })}
                         />
-                        <span className="value-display">Max {data.occupancy}%</span>
                     </div>
-                    <div className="form-group checkbox-group">
-                        <label>
+                    <label className="db-check">
+                        <input
+                            type="checkbox"
+                            checked={data.uiInterfere}
+                            onChange={(e) => update({ uiInterfere: e.target.checked })}
+                        />
+                        <span>UI interfere check (HP / skill slots)</span>
+                    </label>
+                </section>
+            </div>
+
+            {/* 03 Quality Targets */}
+            <section className="db-section">
+                {sectionHead('03', 'Quality targets')}
+                <div className="db-targets">
+                    <div className="db-target" style={{ borderTopColor: 'var(--pillar-clarity)' }}>
+                        <h3 style={{ color: 'var(--pillar-clarity)' }}>Clarity goals</h3>
+                        <textarea
+                            rows="3"
+                            placeholder="플레이어가 이해해야 할 피드백은? (히트 확정, 크리티컬, 스킬 준비, 위험 지역…)"
+                            value={data.clarityGoals}
+                            onChange={(e) => update({ clarityGoals: e.target.value })}
+                        ></textarea>
+                        <label className="db-check">
                             <input
                                 type="checkbox"
-                                checked={data.uiInterfere}
-                                onChange={(e) => update({ uiInterfere: e.target.checked })}
-                            /> UI Interfere Check (HP/Skill Slots)
+                                checked={data.aoeAlignment}
+                                onChange={(e) => update({ aoeAlignment: e.target.checked })}
+                            />
+                            <span>AoE / hitbox alignment required</span>
                         </label>
+                        <div className="db-telegraph">
+                            <label title="Warning time before the effect activates (0 = instant)">Telegraph time (ms)</label>
+                            <input
+                                type="number"
+                                placeholder="400"
+                                value={data.telegraphTime}
+                                onChange={(e) => update({ telegraphTime: parseInt(e.target.value) || 0 })}
+                            />
+                        </div>
                     </div>
-                </div>
 
-                {/* v3.0 Quality Targets */}
-                <div className="brief-section glass-panel full-width">
-                    <h3>3. [v3.0] Quality Targets</h3>
-                    <div className="targets-grid">
-                        <div className="target-card clarity">
-                            <h4>Clarity Goals</h4>
-                            <textarea
-                                placeholder="What feedback should the player understand? (e.g., Hit confirmed, Critical damage, Skill ready, Danger zone)"
-                                value={data.clarityGoals}
-                                onChange={(e) => update({ clarityGoals: e.target.value })}
-                            ></textarea>
-                            <label>
+                    <div className="db-target" style={{ borderTopColor: 'var(--pillar-art)' }}>
+                        <h3 style={{ color: 'var(--pillar-art)' }}>Artistic goals</h3>
+                        <input
+                            type="text"
+                            placeholder="Primary element — 피크에서 가장 잘 읽히는 요소"
+                            value={data.primaryElement}
+                            onChange={(e) => update({ primaryElement: e.target.value })}
+                        />
+                        <div className="db-colors">
+                            <label className="db-color">
                                 <input
-                                    type="checkbox"
-                                    checked={data.aoeAlignment}
-                                    onChange={(e) => update({ aoeAlignment: e.target.checked })}
-                                /> AoE/Hitbox Alignment Required
+                                    type="color"
+                                    value={data.coreColor}
+                                    onChange={(e) => update({ coreColor: e.target.value })}
+                                />
+                                <span>Core {data.coreColor}</span>
                             </label>
-                            <div className="telegraph-input">
-                                <label>
-                                    Telegraph Time (ms)
-                                    <span className="hint" title="Warning time before the effect activates (e.g., enemy attack warning)">ℹ️</span>
-                                </label>
+                            <label className="db-color">
                                 <input
-                                    type="number"
-                                    placeholder="400"
-                                    value={data.telegraphTime}
-                                    onChange={(e) => update({ telegraphTime: parseInt(e.target.value) || 0 })}
+                                    type="color"
+                                    value={data.subColor}
+                                    onChange={(e) => update({ subColor: e.target.value })}
                                 />
-                                <small style={{ color: '#888', fontSize: '0.85rem', marginTop: '4px', display: 'block' }}>Time to warn player before effect hits (0 = instant)</small>
-                            </div>
-                        </div>
-
-                        <div className="target-card art">
-                            <h4>Artistic Goals</h4>
-                            <div className="form-group">
-                                <label>Primary Element (Hierarchy)</label>
-                                <input
-                                    type="text"
-                                    placeholder="The most readable element at peak"
-                                    value={data.primaryElement}
-                                    onChange={(e) => update({ primaryElement: e.target.value })}
-                                />
-                            </div>
-                            <div className="form-group">
-                                <label>Core Color (Primary)</label>
-                                <div className="color-inputs">
-                                    <input
-                                        type="color"
-                                        value={data.coreColor}
-                                        onChange={(e) => update({ coreColor: e.target.value })}
-                                        style={{ width: '60px', height: '40px' }}
-                                    />
-                                    <span style={{ marginLeft: '8px', color: '#aaa' }}>{data.coreColor}</span>
-                                </div>
-                            </div>
-                            <div className="form-group">
-                                <label>Sub Color (Secondary)</label>
-                                <div className="color-inputs">
-                                    <input
-                                        type="color"
-                                        value={data.subColor}
-                                        onChange={(e) => update({ subColor: e.target.value })}
-                                        style={{ width: '60px', height: '40px' }}
-                                    />
-                                    <span style={{ marginLeft: '8px', color: '#aaa' }}>{data.subColor}</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="target-card tech">
-                            <h4>Technical Goals</h4>
-                            <div className="form-group">
-                                <label>Integration Method</label>
-                                <select
-                                    value={data.integration}
-                                    onChange={(e) => update({ integration: e.target.value })}
-                                >
-                                    <option>Depth Fade</option>
-                                    <option>Contact Decal</option>
-                                    <option>Light Wrap</option>
-                                    <option>Mobile Fake Light</option>
-                                </select>
-                            </div>
-                            <div className="form-group">
-                                <label>Aftereffect Component</label>
-                                <input
-                                    type="text"
-                                    placeholder="Smoke / Ember / Residual Glow"
-                                    value={data.aftereffect}
-                                    onChange={(e) => update({ aftereffect: e.target.value })}
-                                />
-                            </div>
+                                <span>Sub {data.subColor}</span>
+                            </label>
                         </div>
                     </div>
+
+                    <div className="db-target" style={{ borderTopColor: 'var(--pillar-tech)' }}>
+                        <h3 style={{ color: 'var(--pillar-tech)' }}>Technical goals</h3>
+                        <select
+                            value={data.integration}
+                            onChange={(e) => update({ integration: e.target.value })}
+                        >
+                            <option>Depth Fade</option>
+                            <option>Contact Decal</option>
+                            <option>Light Wrap</option>
+                            <option>Mobile Fake Light</option>
+                        </select>
+                        <input
+                            type="text"
+                            placeholder="Aftereffect — Smoke / Ember / Residual glow"
+                            value={data.aftereffect}
+                            onChange={(e) => update({ aftereffect: e.target.value })}
+                        />
+                    </div>
                 </div>
-            </div>
+            </section>
         </div>
     );
 };

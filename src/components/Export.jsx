@@ -4,7 +4,7 @@ import './Export.css';
 // Export = the planning exit: Design Brief as markdown.
 // The analysis library travels via the Backup tab (full JSON) instead —
 // an analysis-card report export is deferred to v2.
-const Export = ({ data }) => {
+const Export = ({ data, onGoBackup }) => {
     const downloadFile = (content, filename) => {
         const blob = new Blob([content], { type: 'text/markdown' });
         const url = URL.createObjectURL(blob);
@@ -46,27 +46,19 @@ const Export = ({ data }) => {
 
     return (
         <div className="export-view">
-            <div className="export-header glass-panel">
-                <div className="status-info">
-                    <h3>📄 Export Documentation</h3>
-                    <p>Download the Design Brief as a markdown file.</p>
-                    <div className="path-info">
-                        <strong>💾 Save Location:</strong> Files will be downloaded to your browser's <span style={{ color: '#00f2ff' }}>Downloads</span> folder.
-                    </div>
-                    <div style={{ marginTop: '12px', padding: '8px', background: 'rgba(0,242,255,0.1)', borderRadius: '4px', fontSize: '0.9rem' }}>
-                        <strong>💡 Tip:</strong> To move or share your analysis library (cards, criteria, images), use the <strong>Backup</strong> tab — it exports everything as a single JSON file.
-                    </div>
-                </div>
-            </div>
-
-            <div className="quick-md-export">
-                <h5 style={{ marginBottom: '12px', color: '#00f2ff' }}>📥 Download Files</h5>
-                <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-                    <button className="btn glass-panel" onClick={handleExportBrief} style={{ flex: '1', minWidth: '200px' }}>
-                        📝 Export Brief.md
-                    </button>
-                </div>
-            </div>
+            <section className="export-card">
+                <h2>Export documentation</h2>
+                <p className="export-copy">
+                    Design Brief를 markdown 파일로 다운로드한다. 브라우저의 Downloads 폴더에 저장된다.
+                </p>
+                <p className="export-tip">
+                    분석 라이브러리(카드·기준·이미지) 전체를 옮기거나 공유하려면{' '}
+                    <button className="export-link" onClick={onGoBackup}>Backup 탭</button>을 사용한다 — 단일 JSON으로 내보낸다.
+                </p>
+                <button className="btn btn-primary export-btn" onClick={handleExportBrief}>
+                    Export Brief.md
+                </button>
+            </section>
         </div>
     );
 };

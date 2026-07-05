@@ -5,6 +5,7 @@ import ReferencePack from './components/ReferencePack';
 import TimingSpec from './components/TimingSpec';
 import QualityGates from './components/QualityGates';
 import Export from './components/Export';
+import Backup from './components/Backup';
 import ErrorBoundary from './components/ErrorBoundary';
 import { getImageFromDB } from './utils/indexedDB';
 
@@ -114,6 +115,7 @@ function App() {
     { id: 'timing', label: 'Timing Spec', icon: '⏱️' },
     { id: 'gates', label: 'Quality Gates', icon: '🛡️' },
     { id: 'export', label: 'Export', icon: '📦' },
+    { id: 'backup', label: 'Backup', icon: '💾' },
   ];
 
   return (
@@ -162,6 +164,7 @@ function App() {
             {activeTab === 'timing' && <ErrorBoundary name="TimingSpec" key="timing"><TimingSpec data={vfxData.timing} update={updateTiming} /></ErrorBoundary>}
             {activeTab === 'gates' && <ErrorBoundary name="QualityGates" key="gates"><QualityGates data={vfxData.gates} update={updateGates} /></ErrorBoundary>}
             {activeTab === 'export' && <ErrorBoundary name="Export" key="export"><Export data={vfxData} getImageFromDB={getImageFromDB} /></ErrorBoundary>}
+            {activeTab === 'backup' && <ErrorBoundary name="Backup" key="backup"><Backup /></ErrorBoundary>}
           </div>
         </section>
       </main>

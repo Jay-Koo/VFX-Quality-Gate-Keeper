@@ -1,0 +1,137 @@
+.frame-strip {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.strip-scroll {
+    display: flex;
+    gap: 4px;
+    overflow-x: auto;
+    padding: 8px 4px 12px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+}
+
+.strip-frame {
+    position: relative;
+    flex: 0 0 auto;
+    padding: 0;
+    background: none;
+    border: 2px solid transparent;
+    border-bottom: 4px solid rgba(255, 255, 255, 0.25);
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.strip-frame img {
+    display: block;
+    height: 64px;
+    width: auto;
+    border-radius: 2px;
+}
+
+.strip-frame.selected {
+    border-color: #00f2ff;
+}
+
+.strip-index {
+    position: absolute;
+    bottom: 2px;
+    left: 2px;
+    font-size: 0.6rem;
+    color: #ccc;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 0 3px;
+    border-radius: 2px;
+    pointer-events: none;
+}
+
+.strip-badges {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    display: flex;
+    gap: 2px;
+    pointer-events: none;
+}
+
+.strip-badge {
+    font-size: 0.65rem;
+    font-weight: bold;
+    color: #000;
+    padding: 0 4px;
+    border-radius: 3px;
+}
+
+.strip-inspector {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+}
+
+.strip-preview {
+    flex: 1 1 55%;
+    background: #000;
+    border-radius: 8px;
+    padding: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+}
+
+.strip-preview canvas {
+    max-width: 100%;
+    max-height: 45vh;
+    object-fit: contain;
+    image-rendering: pixelated;
+}
+
+.strip-controls {
+    flex: 1 1 45%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.strip-readout {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    color: #00f2ff;
+}
+
+.strip-time {
+    color: #888;
+    font-size: 0.85rem;
+}
+
+.strip-controls input[type='range'] {
+    width: 100%;
+    cursor: pointer;
+}
+
+.strip-marker-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.strip-marker-buttons .btn {
+    border: 1px solid;
+    background: rgba(0, 0, 0, 0.3);
+    text-align: left;
+}
+
+.strip-hint {
+    font-size: 0.8rem;
+    color: #888;
+    line-height: 1.5;
+}
+
+@media (max-width: 900px) {
+    .strip-inspector {
+        flex-direction: column;
+    }
+}

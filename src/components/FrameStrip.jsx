@@ -24,6 +24,12 @@ const phaseOfFrame = (i, measure) => {
 const FrameStrip = ({ parsed, thumbnails, measure, onMeasureChange }) => {
   const [selected, setSelected] = useState(0);
   const previewRef = useRef(null);
+  const selectedFrameRef = useRef(null);
+
+  // Keep the selected frame visible when navigating with the slider.
+  useEffect(() => {
+    selectedFrameRef.current?.scrollIntoView({ inline: 'center', block: 'nearest' });
+  }, [selected]);
 
   const compositor = useMemo(
     () => (parsed ? createFrameCompositor(parsed) : null),
@@ -68,6 +74,7 @@ const FrameStrip = ({ parsed, thumbnails, measure, onMeasureChange }) => {
           return (
             <button
               key={i}
+              ref={selected === i ? selectedFrameRef : null}
               className={`strip-frame ${selected === i ? 'selected' : ''}`}
               style={{ borderBottomColor: PHASE_COLORS[phase] }}
               onClick={() => setSelected(i)}

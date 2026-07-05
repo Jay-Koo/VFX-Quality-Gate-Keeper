@@ -64,6 +64,9 @@
 
 .main-content {
   flex: 1;
+  /* Without this, wide children (e.g. the frame strip) push the flex item
+     past the viewport instead of scrolling inside their own container. */
+  min-width: 0;
   display: flex;
   flex-direction: column;
   gap: 20px;

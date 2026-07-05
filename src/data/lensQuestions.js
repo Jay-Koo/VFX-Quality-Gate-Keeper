@@ -8,8 +8,8 @@ export const LENS_PILLARS = [
   {
     key: 'clarity',
     name: 'Clarity',
-    icon: '👁️',
-    color: '#00f2ff',
+    sub: '가독성 렌즈',
+    color: '#64d2ff',
     questions: [
       {
         id: 'c1',
@@ -32,8 +32,8 @@ export const LENS_PILLARS = [
   {
     key: 'art',
     name: 'Art',
-    icon: '🎨',
-    color: '#ff007a',
+    sub: '연출 렌즈',
+    color: '#ff375f',
     questions: [
       {
         id: 'a1',
@@ -56,8 +56,8 @@ export const LENS_PILLARS = [
   {
     key: 'tech',
     name: 'Tech',
-    icon: '⚙️',
-    color: '#ccff00',
+    sub: '통합·기법 렌즈',
+    color: '#bf5af2',
     questions: [
       {
         id: 't1',
@@ -76,8 +76,8 @@ export const LENS_PILLARS = [
   {
     key: 'perf',
     name: 'Performance',
-    icon: '⚡',
-    color: '#ff9d00',
+    sub: '성능 렌즈',
+    color: '#ff9f0a',
     questions: [
       {
         id: 'p1',

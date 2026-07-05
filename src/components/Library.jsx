@@ -51,32 +51,39 @@ const Library = ({ cards, onNewCard, onOpenCard, onDeleteCard }) => {
 
   const sorted = [...filtered].sort((a, b) => (b.updatedAt || '').localeCompare(a.updatedAt || ''));
 
+  const answerColor = (n) =>
+    n >= ALL_QUESTIONS.length ? 'var(--phase-resolution)' : n >= 8 ? 'var(--text-primary)' : 'rgba(255,255,255,0.6)';
+
   return (
     <div className="library">
-      <div className="lib-toolbar glass-panel">
+      <div className="lib-header">
         <div>
-          <h3>Analysis Library</h3>
+          <h1>Analysis Library</h1>
           <p className="lib-count">
-            {cards.length} cards{filtered.length !== cards.length ? ` · ${filtered.length} shown` : ''}
+            {cards.length} cards{filtered.length !== cards.length ? ` · ${filtered.length} shown` : ''} — 패턴이 보이면 My Criteria에 명문화한다
           </p>
         </div>
         <button className="btn btn-primary" onClick={onNewCard}>+ New Analysis</button>
       </div>
 
-      {(allTags.length > 0 || cards.length > 0) && (
+      {cards.length > 0 && (
         <div className="lib-filters">
           <div className="lib-filter-row">
             <span className="lib-filter-label">Pillar</span>
-            {LENS_PILLARS.map((p) => (
-              <button
-                key={p.key}
-                className={`lib-chip ${pillarFilter === p.key ? 'active' : ''}`}
-                style={pillarFilter === p.key ? { borderColor: p.color, color: p.color } : {}}
-                onClick={() => setPillarFilter(pillarFilter === p.key ? null : p.key)}
-              >
-                {p.icon} {p.name}
-              </button>
-            ))}
+            {LENS_PILLARS.map((p) => {
+              const active = pillarFilter === p.key;
+              return (
+                <button
+                  key={p.key}
+                  className={`lib-chip ${active ? 'active' : ''}`}
+                  style={active ? { borderColor: p.color, color: p.color } : {}}
+                  onClick={() => setPillarFilter(active ? null : p.key)}
+                >
+                  <span className="lib-chip-dot" style={{ background: p.color }}></span>
+                  {p.name}
+                </button>
+              );
+            })}
           </div>
           {allTags.length > 0 && (
             <div className="lib-filter-row">
@@ -84,7 +91,7 @@ const Library = ({ cards, onNewCard, onOpenCard, onDeleteCard }) => {
               {allTags.map((tag) => (
                 <button
                   key={tag}
-                  className={`lib-chip ${tagFilter === tag ? 'active' : ''}`}
+                  className={`lib-chip lib-chip-tag ${tagFilter === tag ? 'active' : ''}`}
                   onClick={() => setTagFilter(tagFilter === tag ? null : tag)}
                 >
                   #{tag}
@@ -106,7 +113,7 @@ const Library = ({ cards, onNewCard, onOpenCard, onDeleteCard }) => {
             const aar = computeAAR(card.media, card.measure);
             const answers = countLensAnswers(card);
             return (
-              <div key={card.id} className="lib-card glass-panel" onClick={() => onOpenCard(card.id)}>
+              <div key={card.id} className="lib-card" onClick={() => onOpenCard(card.id)}>
                 <button
                   className="lib-delete"
                   title="Delete card"
@@ -123,20 +130,27 @@ const Library = ({ cards, onNewCard, onOpenCard, onDeleteCard }) => {
                   ) : (
                     <span className="lib-thumb-empty">no media</span>
                   )}
+                  <span className="lib-answers" style={{ color: answerColor(answers) }}>
+                    {answers}/{ALL_QUESTIONS.length}
+                  </span>
                 </div>
+                {aar && (
+                  <div className="lib-aar-strip">
+                    <div style={{ background: 'var(--phase-anticipation)', flexGrow: aar.anticipation.pct }}></div>
+                    <div style={{ background: 'var(--phase-action)', flexGrow: aar.action.pct }}></div>
+                    <div style={{ background: 'var(--phase-resolution)', flexGrow: aar.resolution.pct }}></div>
+                  </div>
+                )}
                 <div className="lib-body">
-                  <h4>{card.title || 'Untitled'}</h4>
-                  {card.source && <p className="lib-source">{card.source}</p>}
-                  <div className="lib-badges">
+                  <div className="lib-title-row">
+                    <h4>{card.title || 'Untitled'}</h4>
                     {aar && (
-                      <span className="lib-badge lib-badge-aar" title="A-A-R %">
+                      <span className="lib-aar-label" title="A-A-R %">
                         {aar.anticipation.pct}·{aar.action.pct}·{aar.resolution.pct}
                       </span>
                     )}
-                    <span className="lib-badge" title="Lens answers">
-                      ✍ {answers}/{ALL_QUESTIONS.length}
-                    </span>
                   </div>
+                  {card.source && <p className="lib-source">{card.source}</p>}
                   {card.distill.takeaway && <p className="lib-takeaway">“{card.distill.takeaway}”</p>}
                   {card.distill.tags.length > 0 && (
                     <div className="lib-tags">

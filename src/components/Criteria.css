@@ -1,118 +1,233 @@
 .criteria {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+    max-width: 860px;
+    margin: 0 auto;
 }
 
-.crit-toolbar {
+.crit-header {
     display: flex;
+    align-items: flex-end;
     justify-content: space-between;
-    align-items: flex-start;
     gap: 16px;
-    padding: 20px 24px;
+    margin-bottom: 8px;
+}
+
+.crit-header h1 {
+    font-size: 26px;
+    font-weight: 600;
+    letter-spacing: -0.4px;
 }
 
 .crit-sub {
-    color: #888;
-    font-size: 0.85rem;
     margin-top: 6px;
-    line-height: 1.5;
+    font-size: 13px;
+    color: var(--text-faint);
     max-width: 520px;
+    line-height: 1.5;
+    text-wrap: pretty;
 }
 
 .crit-empty {
+    margin-top: 20px;
     padding: 48px;
     text-align: center;
-    color: #888;
+    color: var(--text-secondary);
     line-height: 1.8;
 }
 
-.crit-group h4 {
-    margin: 8px 0;
+.crit-group {
+    margin-top: 28px;
+}
+
+.crit-group-head {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin-bottom: 12px;
+}
+
+.crit-group-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+}
+
+.crit-group-head h3 {
+    font-family: var(--font-text);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: -0.15px;
+}
+
+.crit-group-count {
+    font-size: 11px;
+    color: var(--text-faint);
+    font-variant-numeric: tabular-nums;
+}
+
+.crit-group-items {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 .crit-item {
-    border-left: 3px solid;
-    padding: 16px 20px;
-    margin-bottom: 12px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--r-card);
+    padding: 18px 20px;
+    transition: border-color 140ms ease;
 }
 
+.crit-item:hover {
+    border-color: rgba(255, 255, 255, 0.18);
+}
+
+/* Edit-in-place: reads as the design's bold statement until focused */
 .crit-text {
     width: 100%;
-    min-height: 48px;
-    resize: vertical;
-    font-size: 1rem;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    padding: 2px 6px;
+    margin: -2px -6px;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.2px;
+    line-height: 1.5;
+    color: var(--text-primary);
+    resize: none;
+    field-sizing: content;
+    min-height: 0;
+    text-wrap: pretty;
+}
+
+.crit-text:hover {
+    border-color: rgba(255, 255, 255, 0.12);
+}
+
+.crit-text:focus {
+    border-color: var(--accent);
+    background: var(--bg-inset);
 }
 
 .crit-meta {
     display: flex;
     gap: 10px;
     align-items: center;
+    margin-top: 10px;
+}
+
+.crit-meta select {
+    font-size: 12px;
+    padding: 5px 30px 5px 10px;
 }
 
 .crit-note {
     flex: 1;
-    font-size: 0.85rem;
+    font-size: 12px !important;
+    padding: 5px 10px !important;
+    background: transparent !important;
+    border-color: transparent !important;
+}
+
+.crit-note:hover {
+    border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+.crit-note:focus {
+    border-color: var(--accent) !important;
+    background: var(--bg-inset) !important;
 }
 
 .crit-delete {
-    color: #ff1744;
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.35);
+    font-family: inherit;
+    font-size: 11px;
+    cursor: pointer;
+    padding: 4px 6px;
+    transition: color 120ms ease;
+}
+
+.crit-delete:hover {
+    color: var(--danger);
+}
+
+.crit-evidence {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-top: 12px;
 }
 
 .crit-evidence-label {
-    color: #777;
-    font-size: 0.8rem;
-    display: block;
-    margin-bottom: 6px;
-}
-
-.crit-evidence-chips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    align-items: center;
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.38);
+    margin-right: 2px;
 }
 
 .crit-chip {
     display: inline-flex;
     align-items: center;
-    border: 1px solid rgba(0, 242, 255, 0.35);
-    border-radius: 999px;
+    background: rgba(41, 151, 255, 0.1);
+    border-radius: 9999px;
     overflow: hidden;
+    transition: background 120ms ease;
+}
+
+.crit-chip:hover {
+    background: rgba(41, 151, 255, 0.2);
 }
 
 .crit-chip-open {
+    display: flex;
+    align-items: center;
+    gap: 6px;
     background: transparent;
     border: none;
-    color: #00f2ff;
-    padding: 3px 4px 3px 10px;
-    font-size: 0.8rem;
+    color: var(--link);
+    padding: 4px 4px 4px 12px;
+    font-family: inherit;
+    font-size: 12px;
     cursor: pointer;
-}
-
-.crit-chip-open:hover {
-    text-decoration: underline;
 }
 
 .crit-chip-remove {
     background: transparent;
     border: none;
-    color: #888;
-    padding: 3px 8px 3px 4px;
+    color: rgba(255, 255, 255, 0.4);
+    padding: 4px 10px 4px 4px;
+    font-size: 12px;
     cursor: pointer;
 }
 
 .crit-chip-remove:hover {
-    color: #ff1744;
+    color: var(--danger);
+}
+
+.crit-link-btn {
+    background: transparent;
+    border: 1px dashed rgba(255, 255, 255, 0.2);
+    border-radius: 9999px;
+    padding: 4px 12px;
+    color: rgba(255, 255, 255, 0.5);
+    font-family: inherit;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 120ms ease;
+}
+
+.crit-link-btn:hover {
+    border-color: rgba(255, 255, 255, 0.4);
+    color: #ffffff;
 }
 
 .crit-picker {
-    margin-top: 10px;
-    background: rgba(0, 0, 0, 0.3);
-    border-radius: 8px;
+    margin-top: 12px;
+    background: var(--bg-inset);
+    border-radius: 10px;
     padding: 10px 14px;
     max-height: 220px;
     overflow-y: auto;
@@ -124,19 +239,19 @@
     align-items: baseline;
     padding: 4px 0;
     cursor: pointer;
-    font-size: 0.9rem;
-    color: #ccc;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.75);
 }
 
 .crit-picker-takeaway {
-    color: #777;
-    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 11px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 
 .crit-picker-empty {
-    color: #777;
-    font-size: 0.85rem;
+    color: var(--text-faint);
+    font-size: 12px;
 }

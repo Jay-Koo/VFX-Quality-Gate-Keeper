@@ -1,0 +1,2 @@
+# Windows launcher must always check out with CRLF, regardless of autocrlf
+*.bat text eol=crlf

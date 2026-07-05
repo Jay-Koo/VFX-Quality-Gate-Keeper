@@ -1,37 +1,44 @@
 @echo off
-TITLE VFX Quality Gate Keeper v3.0 - Runner
+TITLE VFX Gate - Eye-training
 SETLOCAL
 
-:: 1. Define Local Node.js Path (Ensuring it works even if not in System PATH)
+:: 1. Make Node.js reachable even if it is not in the system PATH (default install dir)
 set "NODE_DIR=C:\Program Files\nodejs"
 set "PATH=%NODE_DIR%;%PATH%"
 
-:: 2. Check if Node.js is accessible
+:: 2. Check Node.js
 node -v >nul 2>&1
 if %errorlevel% neq 0 (
-    echo [ERROR] Node.js not found at %NODE_DIR%
-    echo Please ensure Node.js is installed correctly.
+    echo [ERROR] Node.js not found.
+    echo Install Node.js LTS from https://nodejs.org and run this file again.
     pause
-    exit /b
+    exit /b 1
 )
 
-:: 3. Clear Screen and Show Branding
 cls
 echo ==========================================
-echo    VFX Quality Gate Keeper v3.0
+echo    VFX Gate - Eye-training
 echo ==========================================
-echo [1/2] Starting local server...
-echo [2/2] Opening your browser at http://localhost:5173
-echo.
+
+:: 3. First run after clone: node_modules is not in git, so install it
+if not exist node_modules (
+    echo [SETUP] First run - installing dependencies...
+    echo         This needs internet and can take a few minutes.
+    call npm install
+    if errorlevel 1 (
+        echo [ERROR] npm install failed. Check your internet connection and retry.
+        pause
+        exit /b 1
+    )
+)
+
+echo Starting local server - your browser opens when it is ready.
 echo * Keep this window open while using the program.
 echo * Close this window to stop the program.
 echo ==========================================
 
-:: 4. Open the default browser to the localhost address
-start http://localhost:5173
-
-:: 5. Run the dev server
-npm run dev
+:: 4. Run the dev server; --open launches the browser at the actual port
+call npm run dev -- --open
 
 ENDLOCAL
 pause

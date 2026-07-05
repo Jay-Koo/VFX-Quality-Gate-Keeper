@@ -8,9 +8,10 @@ import Export from './components/Export';
 import Backup from './components/Backup';
 import Library from './components/Library';
 import AnalysisCard from './components/AnalysisCard';
+import Criteria from './components/Criteria';
 import ErrorBoundary from './components/ErrorBoundary';
 import { getImageFromDB, deleteImageFromDB } from './utils/indexedDB';
-import { loadEyeData, saveEyeData, createCard, mediaKey, thumbKey } from './utils/eyeStore';
+import { loadEyeData, saveEyeData, createCard, createCriterion, mediaKey, thumbKey } from './utils/eyeStore';
 
 // Initial state for all modules
 const INITIAL_STATE = {
@@ -119,6 +120,27 @@ function App() {
 
   const openCard = eyeData.cards.find(c => c.id === openCardId) || null;
 
+  const addCriterion = () => {
+    setEyeData(prev => ({ ...prev, criteria: [...prev.criteria, createCriterion()] }));
+  };
+
+  const updateCriterion = (updated) => {
+    setEyeData(prev => ({
+      ...prev,
+      criteria: prev.criteria.map(c => c.id === updated.id ? updated : c)
+    }));
+  };
+
+  const deleteCriterion = (id) => {
+    setEyeData(prev => ({ ...prev, criteria: prev.criteria.filter(c => c.id !== id) }));
+  };
+
+  // Jump from a criterion's evidence chip to the card it cites.
+  const openCardFromCriteria = (cardId) => {
+    setOpenCardId(cardId);
+    setActiveTab('library');
+  };
+
   // Load state from localStorage or use initial
   const [vfxData, setVfxData] = useState(() => {
     try {
@@ -158,6 +180,7 @@ function App() {
 
   const tabs = [
     { id: 'library', label: 'Library', icon: '🗂️' },
+    { id: 'criteria', label: 'My Criteria', icon: '📏' },
     { id: 'brief', label: 'Design Brief', icon: '📝' },
     { id: 'ref', label: 'Reference Pack', icon: '🖼️' },
     { id: 'timing', label: 'Timing Spec', icon: '⏱️' },
@@ -222,6 +245,18 @@ function App() {
                   />
                 </ErrorBoundary>
               )
+            )}
+            {activeTab === 'criteria' && (
+              <ErrorBoundary name="Criteria" key="criteria">
+                <Criteria
+                  criteria={eyeData.criteria}
+                  cards={eyeData.cards}
+                  onAdd={addCriterion}
+                  onUpdate={updateCriterion}
+                  onDelete={deleteCriterion}
+                  onOpenCard={openCardFromCriteria}
+                />
+              </ErrorBoundary>
             )}
             {activeTab === 'brief' && <ErrorBoundary name="DesignBrief" key="brief"><DesignBrief data={vfxData.brief} update={updateBrief} /></ErrorBoundary>}
             {activeTab === 'ref' && <ErrorBoundary name="ReferencePack" key="ref"><ReferencePack data={vfxData.refs} update={updateRefs} /></ErrorBoundary>}
